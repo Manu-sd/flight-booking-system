@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import Flight
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def search_flights(request):
 
     # If user just opens the Search Flights page
