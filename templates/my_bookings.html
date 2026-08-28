@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Bookings - FlightBook</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        .navbar {
+            height: 70px;
+            background: #0b1f3a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #3da9fc;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            background: #1677c8;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            color: #0b1f3a;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #777;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .flight-name {
+            color: #0b1f3a;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .status {
+            background: #e7f7ed;
+            color: #16803c;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .route {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            color: #0b1f3a;
+            margin: 20px 0;
+        }
+
+        .route span {
+            color: #1677c8;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .detail {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 7px;
+        }
+
+        .label {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            color: #0b1f3a;
+            font-weight: bold;
+        }
+
+        .booking-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677c8;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .ticket-btn {
+            background: #1677c8;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .empty {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .empty h2 {
+            color: #0b1f3a;
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .search-btn {
+            display: inline-block;
+            background: #1677c8;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .booking-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    {% include 'navbar.html' %}
+
+    <div class="container">
+
+
+        <div class="title">
+
+            <h1>My Bookings</h1>
+
+            <p>
+                View and manage your flight bookings
+            </p>
+
+        </div>
+
+
+        {% if bookings %}
+
+
+            {% for booking in bookings %}
+
+                <div class="booking-card">
+
+
+                    <div class="booking-header">
+
+                        <div class="flight-name">
+
+                            {{ booking.flight.airline.name }}
+
+                            —
+
+                            {{ booking.flight.flight_number }}
+
+                        </div>
+
+
+                        <div class="status">
+
+                            {{ booking.status|upper }}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="route">
+
+                        {{ booking.flight.source.code }}
+
+                        <span>→</span>
+
+                        {{ booking.flight.destination.code }}
+
+                    </div>
+
+
+                    <div class="details">
+
+
+                        <div class="detail">
+
+                            <span class="label">
+                                Passenger
+                            </span>
+
+                            <span class="value">
+
+                                {{ booking.passengers.first.full_name }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="label">
+                                Seat
+                            </span>
+
+                            <span class="value">
+
+                                {{ booking.passengers.first.seat_number }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="label">
+                                Travel Class
+                            </span>
+
+                            <span class="value">
+
+                                {{ booking.flight.travel_class }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="label">
+                                Departure
+                            </span>
+
+                            <span class="value">
+
+                                {{ booking.flight.departure_time|date:"d M Y, H:i" }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="label">
+                                Booking ID
+                            </span>
+
+                            <span class="value">
+
+                                #{{ booking.id }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="label">
+                                Booking Date
+                            </span>
+
+                            <span class="value">
+
+                                {{ booking.created_date|date:"d M Y" }}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="booking-footer">
+
+
+                        <div class="price">
+
+                            ₹{{ booking.total_amount }}
+
+                        </div>
+
+
+                        <div class="buttons">
+
+                            <a
+                                href="{% url 'ticket' booking.id %}"
+                                class="btn ticket-btn"
+                            >
+                                View Ticket
+                            </a>
+
+
+                            {% if booking.status == "Confirmed" %}
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'cancel_booking' booking.id %}"
+                                    onsubmit="return confirm('Are you sure you want to cancel this booking?');"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn cancel-btn"
+                                    >
+                                        Cancel Booking
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="empty">
+
+                <h2>
+                    ✈️ No Bookings Yet
+                </h2>
+
+                <p>
+                    You haven't booked any flights yet.
+                </p>
+
+                <a
+                    href="/"
+                    class="search-btn"
+                >
+                    Search Flights
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</body>
+
+</html>

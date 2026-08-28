@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Summary - FlightBook</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        .navbar {
+            height: 70px;
+            background: #0b1f3a;
+            display: flex;
+            align-items: center;
+            padding: 0 7%;
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #3da9fc;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            color: #0b1f3a;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #777;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #0b1f3a;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #777;
+        }
+
+        .value {
+            font-weight: bold;
+            color: #0b1f3a;
+        }
+
+        .route {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1677c8;
+            margin: 20px 0;
+        }
+
+        .seat {
+            display: inline-block;
+            background: #1677c8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .total {
+            font-size: 22px;
+            color: #1677c8;
+        }
+
+        .payment-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #1677c8;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .payment-btn:hover {
+            background: #0b5fa5;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            ✈️ Flight<span>Book</span>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <div class="title">
+
+            <h1>Booking Summary</h1>
+
+            <p>Review your booking details before payment</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>✈️ Flight Details</h2>
+
+            <div class="row">
+
+                <span class="label">Airline</span>
+
+                <span class="value">
+                    {{ booking.flight.airline.name }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Flight Number</span>
+
+                <span class="value">
+                    {{ booking.flight.flight_number }}
+                </span>
+
+            </div>
+
+
+            <div class="route">
+
+                {{ booking.flight.source.code }}
+
+                →
+
+                {{ booking.flight.destination.code }}
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Departure</span>
+
+                <span class="value">
+                    {{ booking.flight.departure_time|date:"d M Y, H:i" }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Arrival</span>
+
+                <span class="value">
+                    {{ booking.flight.arrival_time|date:"d M Y, H:i" }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Class</span>
+
+                <span class="value">
+                    {{ booking.flight.travel_class }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>👤 Passenger Details</h2>
+
+            <div class="row">
+
+                <span class="label">Name</span>
+
+                <span class="value">
+                    {{ passenger.full_name }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Age</span>
+
+                <span class="value">
+                    {{ passenger.age }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Gender</span>
+
+                <span class="value">
+                    {{ passenger.gender }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Email</span>
+
+                <span class="value">
+                    {{ passenger.email }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Phone</span>
+
+                <span class="value">
+                    {{ passenger.phone }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">Seat</span>
+
+                <span class="value">
+
+                    <span class="seat">
+                        {{ passenger.seat_number }}
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>💳 Payment</h2>
+
+            <div class="row">
+
+                <span class="label">
+                    Total Amount
+                </span>
+
+                <span class="value total">
+                    ₹{{ booking.total_amount }}
+                </span>
+
+            </div>
+
+
+            <a
+                href="{% url 'payment' booking.id %}"
+                class="payment-btn"
+            >
+                Proceed to Payment →
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

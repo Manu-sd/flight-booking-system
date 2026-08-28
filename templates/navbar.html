@@ -1,0 +1,122 @@
+<style>
+
+    .main-navbar {
+        height: 70px;
+        background: #0b1f3a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 6%;
+        color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar-logo {
+        font-size: 25px;
+        font-weight: bold;
+        text-decoration: none;
+        color: white;
+    }
+
+    .navbar-logo span {
+        color: #3da9fc;
+    }
+
+    .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .navbar-links a {
+        color: white;
+        text-decoration: none;
+        padding: 11px 16px;
+        border-radius: 7px;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    .navbar-links a:hover {
+        background: #1677c8;
+    }
+
+    .navbar-user {
+        color: #cbd5e1;
+        margin-right: 5px;
+        font-size: 14px;
+    }
+
+    .logout-btn {
+        background: #dc3545 !important;
+    }
+
+    .logout-btn:hover {
+        background: #b02a37 !important;
+    }
+
+    @media (max-width: 750px) {
+
+        .main-navbar {
+            height: auto;
+            padding: 15px 5%;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .navbar-links {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+    }
+
+</style>
+
+
+<nav class="main-navbar">
+
+    <a href="{% url 'home' %}" class="navbar-logo">
+        ✈️ Flight<span>Book</span>
+    </a>
+
+
+    <div class="navbar-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'search_flights' %}">
+            🔎 Search Flights
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'my_bookings' %}">
+                🎫 My Bookings
+            </a>
+
+            <span class="navbar-user">
+                Hi, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>

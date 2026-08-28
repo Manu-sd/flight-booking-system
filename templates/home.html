@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FlightBook - Fly Without Limits</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #172b4d;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 600px;
+
+            background:
+                linear-gradient(
+                    rgba(7, 30, 58, 0.72),
+                    rgba(7, 30, 58, 0.72)
+                ),
+                url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85");
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            color: white;
+
+            padding: 70px 20px;
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero h1 span {
+            color: #3da9fc;
+        }
+
+        .hero p {
+            font-size: 21px;
+            line-height: 1.6;
+            color: #e5edf7;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #1677c8;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #0b5fa5;
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #0b1f3a;
+        }
+
+        .secondary-btn:hover {
+            background: #eef4fa;
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= QUICK SEARCH ================= */
+
+        .quick-search {
+            max-width: 1100px;
+            margin: -55px auto 0;
+            position: relative;
+            z-index: 5;
+
+            background: white;
+            border-radius: 16px;
+
+            padding: 30px;
+
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+
+            text-align: center;
+        }
+
+        .quick-search h2 {
+            color: #0b1f3a;
+            margin-bottom: 10px;
+        }
+
+        .quick-search p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .quick-search-btn {
+            display: inline-block;
+            background: #1677c8;
+            color: white;
+            text-decoration: none;
+
+            padding: 14px 35px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .quick-search-btn:hover {
+            background: #0b5fa5;
+        }
+
+
+        /* ================= DESTINATIONS ================= */
+
+        .destinations {
+            padding: 90px 20px 70px;
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            color: #0b1f3a;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #777;
+            font-size: 17px;
+        }
+
+        .destination-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .destination {
+            height: 250px;
+
+            border-radius: 14px;
+            overflow: hidden;
+
+            position: relative;
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: flex-end;
+
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+
+            transition: 0.25s;
+        }
+
+        .destination:hover {
+            transform: translateY(-6px);
+        }
+
+        .destination-content {
+            width: 100%;
+
+            padding: 25px 18px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    transparent,
+                    rgba(0,0,0,0.85)
+                );
+        }
+
+        .destination-content h3 {
+            font-size: 23px;
+            margin-bottom: 5px;
+        }
+
+        .destination-content p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .bangalore {
+            background-image:
+                url("https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .delhi {
+            background-image:
+                url("https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .mumbai {
+            background-image:
+                url("https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .goa {
+            background-image:
+                url("https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80");
+        }
+
+
+        /* ================= FEATURES ================= */
+
+        .features {
+            background: white;
+            padding: 75px 20px;
+        }
+
+        .feature-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            padding: 35px 25px;
+
+            text-align: center;
+
+            border-radius: 14px;
+
+            background: #f7f9fc;
+
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .feature-icon {
+            font-size: 42px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            color: #0b1f3a;
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+            background: #0b1f3a;
+            color: white;
+            padding: 55px 20px;
+        }
+
+        .stats-container {
+            max-width: 1000px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+
+            text-align: center;
+        }
+
+        .stat h2 {
+            font-size: 35px;
+            color: #3da9fc;
+            margin-bottom: 8px;
+        }
+
+        .stat p {
+            color: #d5dfeb;
+        }
+
+
+        /* ================= CTA ================= */
+
+        .cta {
+            padding: 80px 20px;
+            text-align: center;
+            background: #f5f7fa;
+        }
+
+        .cta h2 {
+            font-size: 38px;
+            color: #0b1f3a;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #777;
+            font-size: 17px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #071a31;
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        footer .footer-logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-logo span {
+            color: #3da9fc;
+        }
+
+        footer p {
+            color: #aebdcc;
+            font-size: 14px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .destination-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .hero {
+                min-height: 520px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .destination-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    {% include 'navbar.html' %}
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Your Journey Begins
+                <span>Here</span>
+            </h1>
+
+            <p>
+                Discover amazing destinations, compare flights,
+                and book your next adventure with FlightBook.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{% url 'search_flights' %}"
+                    class="primary-btn"
+                >
+                    🔍 Search Flights
+                </a>
+
+                <a
+                    href="{% url 'my_bookings' %}"
+                    class="secondary-btn"
+                >
+                    🎫 My Bookings
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= QUICK SEARCH ================= -->
+
+    <section class="quick-search">
+
+        <h2>
+            Ready to take off?
+        </h2>
+
+        <p>
+            Find the perfect flight for your next journey.
+        </p>
+
+        <a
+            href="{% url 'search_flights' %}"
+            class="quick-search-btn"
+        >
+            Search Available Flights →
+        </a>
+
+    </section>
+
+
+    <!-- ================= DESTINATIONS ================= -->
+
+    <section class="destinations">
+
+        <div class="section-title">
+
+            <h2>
+                Popular Destinations
+            </h2>
+
+            <p>
+                Explore some of the most loved destinations
+            </p>
+
+        </div>
+
+
+        <div class="destination-grid">
+
+
+            <div class="destination bangalore">
+
+                <div class="destination-content">
+
+                    <h3>
+                        Bengaluru
+                    </h3>
+
+                    <p>
+                        India's Silicon Valley
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="destination delhi">
+
+                <div class="destination-content">
+
+                    <h3>
+                        Delhi
+                    </h3>
+
+                    <p>
+                        The heart of India
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="destination mumbai">
+
+                <div class="destination-content">
+
+                    <h3>
+                        Mumbai
+                    </h3>
+
+                    <p>
+                        The city that never sleeps
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="destination goa">
+
+                <div class="destination-content">
+
+                    <h3>
+                        Goa
+                    </h3>
+
+                    <p>
+                        Beaches and sunshine
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="features">
+
+        <div class="feature-container">
+
+
+            <div class="section-title">
+
+                <h2>
+                    Why Choose FlightBook?
+                </h2>
+
+                <p>
+                    Everything you need for a smooth booking experience
+                </p>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        Easy Flight Search
+                    </h3>
+
+                    <p>
+                        Search flights by destination,
+                        date, and travel class in seconds.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        💺
+                    </div>
+
+                    <h3>
+                        Choose Your Seat
+                    </h3>
+
+                    <p>
+                        Select your preferred seat
+                        before completing your booking.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🎫
+                    </div>
+
+                    <h3>
+                        Digital E-Ticket
+                    </h3>
+
+                    <p>
+                        Access your confirmed booking
+                        and ticket whenever you need it.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATS ================= -->
+
+    <section class="stats">
+
+        <div class="stats-container">
+
+
+            <div class="stat">
+
+                <h2>
+                    50+
+                </h2>
+
+                <p>
+                    Flights
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <h2>
+                    20+
+                </h2>
+
+                <p>
+                    Destinations
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <h2>
+                    10+
+                </h2>
+
+                <p>
+                    Airlines
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <h2>
+                    100%
+                </h2>
+
+                <p>
+                    Secure Booking
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta">
+
+        <h2>
+            Ready for your next adventure?
+        </h2>
+
+        <p>
+            Search available flights and start planning your journey today.
+        </p>
+
+        <a
+            href="{% url 'search_flights' %}"
+            class="primary-btn"
+        >
+            ✈️ Start Booking
+        </a>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            ✈️ Flight<span>Book</span>
+
+        </div>
+
+        <p>
+            Your simple and reliable flight booking system.
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

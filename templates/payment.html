@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment - FlightBook</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        .navbar {
+            height: 70px;
+            background: #0b1f3a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #3da9fc;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            background: #1677c8;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            color: #0b1f3a;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #777;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #0b1f3a;
+            margin-bottom: 20px;
+        }
+
+        .booking-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .booking-info:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #777;
+        }
+
+        .value {
+            font-weight: bold;
+            color: #0b1f3a;
+        }
+
+        .amount {
+            font-size: 26px;
+            color: #1677c8;
+        }
+
+        .payment-method {
+            margin-bottom: 15px;
+        }
+
+        .payment-method input {
+            display: none;
+        }
+
+        .payment-method label {
+            display: block;
+            padding: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0b1f3a;
+            transition: 0.2s;
+        }
+
+        .payment-method label:hover {
+            border-color: #1677c8;
+        }
+
+        .payment-method input:checked + label {
+            border-color: #1677c8;
+            background: #eef7ff;
+        }
+
+        .payment-details {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .payment-details.active {
+            display: block;
+        }
+
+        .payment-details label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .payment-details input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #1677c8;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .pay-btn:hover {
+            background: #0b5fa5;
+        }
+
+        .pay-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .secure {
+            text-align: center;
+            color: #16803c;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .payment-note {
+            background: #f0f8ff;
+            border-left: 4px solid #1677c8;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #555;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            ✈️ Flight<span>Book</span>
+        </div>
+
+        <a href="{% url 'home' %}" class="back-btn">
+            ← Home
+        </a>
+
+    </nav>
+
+
+    <div class="container">
+
+        <div class="title">
+
+            <h1>💳 Secure Payment</h1>
+
+            <p>
+                Complete your payment to confirm your flight
+            </p>
+
+        </div>
+
+
+        <!-- BOOKING DETAILS -->
+
+        <div class="card">
+
+            <h2>Booking Details</h2>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Flight
+                </span>
+
+                <span class="value">
+                    {{ booking.flight.flight_number }}
+                </span>
+
+            </div>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Airline
+                </span>
+
+                <span class="value">
+                    {{ booking.flight.airline.name }}
+                </span>
+
+            </div>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Route
+                </span>
+
+                <span class="value">
+
+                    {{ booking.flight.source.code }}
+
+                    →
+
+                    {{ booking.flight.destination.code }}
+
+                </span>
+
+            </div>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Passenger
+                </span>
+
+                <span class="value">
+                    {{ passenger.full_name }}
+                </span>
+
+            </div>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Seat
+                </span>
+
+                <span class="value">
+                    {{ passenger.seat_number }}
+                </span>
+
+            </div>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Travel Class
+                </span>
+
+                <span class="value">
+                    {{ booking.flight.travel_class }}
+                </span>
+
+            </div>
+
+
+            <div class="booking-info">
+
+                <span class="label">
+                    Total Amount
+                </span>
+
+                <span class="value amount">
+                    ₹{{ booking.total_amount }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYMENT CARD -->
+
+        <div class="card">
+
+            <h2>Select Payment Method</h2>
+
+
+            <div class="payment-note">
+
+                🔒 This is a demo payment system.
+                No real money will be charged.
+
+            </div>
+
+
+            <form
+                method="POST"
+                id="paymentForm"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- UPI -->
+
+                <div class="payment-method">
+
+                    <input
+                        type="radio"
+                        id="upi"
+                        name="payment_method"
+                        value="UPI"
+                        required
+                    >
+
+                    <label for="upi">
+                        📱 UPI
+                    </label>
+
+                </div>
+
+
+                <!-- CARD -->
+
+                <div class="payment-method">
+
+                    <input
+                        type="radio"
+                        id="card"
+                        name="payment_method"
+                        value="Card"
+                    >
+
+                    <label for="card">
+                        💳 Credit / Debit Card
+                    </label>
+
+                </div>
+
+
+                <!-- NET BANKING -->
+
+                <div class="payment-method">
+
+                    <input
+                        type="radio"
+                        id="netbanking"
+                        name="payment_method"
+                        value="Net Banking"
+                    >
+
+                    <label for="netbanking">
+                        🏦 Net Banking
+                    </label>
+
+                </div>
+
+
+                <!-- UPI DETAILS -->
+
+                <div
+                    class="payment-details"
+                    id="upi-details"
+                >
+
+                    <label>
+                        UPI ID
+                    </label>
+
+                    <input
+                        type="text"
+                        name="upi_id"
+                        id="upi_id"
+                        placeholder="example@upi"
+                    >
+
+                </div>
+
+
+                <!-- CARD DETAILS -->
+
+                <div
+                    class="payment-details"
+                    id="card-details"
+                >
+
+                    <label>
+                        Card Number
+                    </label>
+
+                    <input
+                        type="text"
+                        name="card_number"
+                        id="card_number"
+                        placeholder="1234 5678 9012 3456"
+                        maxlength="19"
+                    >
+
+
+                    <label>
+                        Card Holder Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="card_name"
+                        id="card_name"
+                        placeholder="Enter card holder name"
+                    >
+
+
+                    <label>
+                        CVV
+                    </label>
+
+                    <input
+                        type="password"
+                        name="cvv"
+                        id="cvv"
+                        placeholder="123"
+                        maxlength="3"
+                    >
+
+                </div>
+
+
+                <!-- NET BANKING -->
+
+                <div
+                    class="payment-details"
+                    id="netbanking-details"
+                >
+
+                    <label>
+                        Select Bank
+                    </label>
+
+                    <select
+                        name="bank"
+                        id="bank"
+                        style="
+                            width:100%;
+                            padding:13px;
+                            border:1px solid #ccc;
+                            border-radius:7px;
+                            font-size:15px;
+                        "
+                    >
+
+                        <option value="">
+                            Select your bank
+                        </option>
+
+                        <option value="SBI">
+                            State Bank of India
+                        </option>
+
+                        <option value="HDFC">
+                            HDFC Bank
+                        </option>
+
+                        <option value="ICICI">
+                            ICICI Bank
+                        </option>
+
+                        <option value="Axis">
+                            Axis Bank
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="pay-btn"
+                    id="payButton"
+                >
+
+                    Pay ₹{{ booking.total_amount }} →
+
+                </button>
+
+
+            </form>
+
+
+            <div class="secure">
+
+                🔒 Secure Demo Payment
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const paymentMethods =
+            document.querySelectorAll(
+                'input[name="payment_method"]'
+            );
+
+        const upiDetails =
+            document.getElementById("upi-details");
+
+        const cardDetails =
+            document.getElementById("card-details");
+
+        const netbankingDetails =
+            document.getElementById("netbanking-details");
+
+
+        paymentMethods.forEach(function(method) {
+
+            method.addEventListener("change", function() {
+
+                upiDetails.classList.remove("active");
+
+                cardDetails.classList.remove("active");
+
+                netbankingDetails.classList.remove("active");
+
+
+                if (this.value === "UPI") {
+
+                    upiDetails.classList.add("active");
+
+                }
+
+
+                if (this.value === "Card") {
+
+                    cardDetails.classList.add("active");
+
+                }
+
+
+                if (this.value === "Net Banking") {
+
+                    netbankingDetails.classList.add("active");
+
+                }
+
+            });
+
+        });
+
+
+        document
+            .getElementById("paymentForm")
+            .addEventListener("submit", function() {
+
+                const button =
+                    document.getElementById("payButton");
+
+                button.disabled = true;
+
+                button.innerHTML =
+                    "Processing Payment... ⏳";
+
+            });
+
+
+    </script>
+
+</body>
+
+</html>
